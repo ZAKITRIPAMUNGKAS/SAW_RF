@@ -1,0 +1,103 @@
+TEPE-DEV PROPRIETARY LICENSE
+
+Copyright (c) 2024 TEPE-DEV. All rights reserved.
+
+PENGGUNAAN HANYA UNTUK YANG DIIZINKAN
+
+SISTEM REKOMENDASI FORMATUR IPM JAWA TENGAH
+=============================================
+
+1. DEFINISI
+-----------
+"Software" mengacu pada Sistem Rekomendasi Formatur IPM Jawa Tengah
+yang dikembangkan oleh TEPE-DEV, termasuk namun tidak terbatas pada:
+- Kode sumber (Source Code)
+- Dokumentasi
+- Database schema
+- Assets dan resources
+- Konfigurasi dan deployment files
+
+2. HAK KEPEMILIKAN
+------------------
+Software ini adalah properti intelektual TEPE-DEV dan dilindungi oleh:
+- Undang-Undang Hak Cipta Republik Indonesia
+- Peraturan Internasional tentang Hak Kekayaan Intelektual
+- Hukum kontrak dan perjanjian
+
+3. LISENSI TERBATAS
+------------------
+TEPE-DEV memberikan lisensi terbatas untuk menggunakan Software ini
+HANYA kepada pihak-pihak yang telah mendapatkan izin tertulis.
+
+4. LARANGAN KETAT
+-----------------
+DILARANG KERAS untuk:
+a) Menyalin, mendistribusikan, atau menyebarluaskan Software
+b) Melakukan reverse engineering, decompile, atau disassemble
+c) Memodifikasi, mengadaptasi, atau membuat derivative works
+d) Menghapus atau mengubah copyright notice
+e) Menggunakan untuk tujuan komersial tanpa izin tertulis
+f) Memberikan akses kepada pihak ketiga tanpa izin
+
+5. PENGGUNAAN YANG DIIZINKAN
+----------------------------
+Penggunaan Software ini hanya diperbolehkan untuk:
+a) Tujuan yang telah disepakati dalam perjanjian
+b) Maintenance dan support yang diperlukan
+c) Backup untuk keperluan disaster recovery
+d) Testing dan development dengan pengawasan ketat
+
+6. KONFIDENSIALITAS
+-------------------
+Semua informasi dalam Software ini bersifat:
+- RAHASIA (Confidential)
+- PROPRIETARY
+- TIDAK BOLEH DIBAGIKAN kepada pihak yang tidak berwenang
+
+7. PENGAWASAN
+-------------
+TEPE-DEV berhak untuk:
+a) Melakukan audit penggunaan Software
+b) Memantau compliance dengan lisensi
+c) Mengambil tindakan hukum jika terjadi pelanggaran
+
+8. PENGGANTIAN RUGI
+-------------------
+Pengguna bertanggung jawab penuh atas:
+a) Kerugian yang timbul akibat pelanggaran lisensi
+b) Biaya hukum dan ganti rugi
+c) Kerusakan reputasi TEPE-DEV
+
+9. PENGALIHAN
+-------------
+Lisensi ini TIDAK DAPAT dialihkan kepada pihak lain
+tanpa izin tertulis dari TEPE-DEV.
+
+10. PENGAKHIRAN
+---------------
+Lisensi ini dapat diakhiri segera jika:
+a) Terjadi pelanggaran terhadap ketentuan
+b) Penggunaan di luar yang diizinkan
+c) Pelanggaran konfidensialitas
+
+11. HUKUM YANG BERLAKU
+----------------------
+Perjanjian ini tunduk pada hukum Republik Indonesia.
+Sengketa akan diselesaikan melalui pengadilan yang berwenang
+di wilayah hukum TEPE-DEV.
+
+12. KONTAK
+----------
+Untuk pertanyaan lisensi dan izin:
+Email: legal@tepe-dev.com
+Website: https://tepe-dev.com
+
+===============================================
+
+DENGAN MENGGUNAKAN SOFTWARE INI, ANDA MENYETUJUI
+SEMUA KETENTUAN DAN SYARAT DALAM LISENSI INI.
+
+TEPE-DEV
+2024
+
+"Excellence in Technology, Trust in Development"

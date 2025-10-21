@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Sistem Rekomendasi Formatur IPM Jawa Tengah')</title>
+    <meta name="copyright" content="© 2024 TEPE-DEV. All rights reserved.">
+    <meta name="author" content="TEPE-DEV">
+    <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -809,6 +812,20 @@
 
                 @yield('content')
             </div>
+            
+            <!-- Footer -->
+            <footer style="background: var(--ipm-gray-50); border-top: 1px solid var(--ipm-gray-200); padding: 1rem 2rem; margin-top: auto;">
+                <div style="text-align: center; color: var(--ipm-gray-600); font-size: 0.875rem;">
+                    <p style="margin: 0;">
+                        © 2024 <strong>TEPE-DEV</strong> - All Rights Reserved | 
+                        <span style="color: var(--ipm-green);">Sistem Rekomendasi Formatur IPM Jawa Tengah</span>
+                    </p>
+                    <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem;">
+                        Penggunaan hanya untuk yang diizinkan | 
+                        <a href="https://tepe-dev.com" style="color: var(--ipm-green); text-decoration: none;">tepe-dev.com</a>
+                    </p>
+                </div>
+            </footer>
         </main>
     </div>
 
