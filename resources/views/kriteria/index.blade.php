@@ -4,7 +4,8 @@
 @section('page-title', 'Kriteria Penilaian')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Kriteria dan Bobot Penilaian</h4>
     <a href="{{ route('dashboard') }}" class="btn btn-secondary">
         <i class="fas fa-arrow-left me-2"></i>
@@ -15,7 +16,7 @@
 
 <div class="card shadow">
     <div class="card-header">
-        <h6 class="mb-0">
+        <h6 class="m-0 font-weight-bold text-primary">
             <i class="fas fa-list me-2"></i>
             Daftar Kriteria Penilaian SAW
         </h6>
@@ -92,7 +93,7 @@
 <!-- Chart Bobot Kriteria -->
 <div class="card shadow mt-4">
     <div class="card-header">
-        <h6 class="mb-0">
+        <h6 class="m-0 font-weight-bold text-primary">
             <i class="fas fa-chart-pie me-2"></i>
             Visualisasi Bobot Kriteria
         </h6>
@@ -131,4 +132,5 @@
         </div>
     </div>
 </div>
+</div> <!-- End container-fluid -->
 @endsection

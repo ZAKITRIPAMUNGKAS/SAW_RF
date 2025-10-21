@@ -1,24 +1,45 @@
 @extends('layouts.app')
 
-@section('title', 'Input Penilaian - Sistem Rekomendasi Formatur')
-@section('page-title', 'Input Penilaian')
+@section('title', 'Input Penilaian Kandidat')
+@section('page-title', 'Input Penilaian Kandidat')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">Matriks Penilaian Kandidat</h4>
+<!-- Header Section -->
+<div style="margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--ipm-gray-900); margin: 0 0 0.5rem 0;">
+                <i class="fas fa-star" style="color: var(--ipm-green); margin-right: 0.5rem;"></i>
+                Input Penilaian Kandidat
+            </h2>
+            <p style="color: var(--ipm-gray-600); margin: 0;">Berikan penilaian untuk setiap kandidat berdasarkan kriteria yang telah ditetapkan</p>
+        </div>
+        <div style="display: flex; gap: 1rem;">
             <a href="{{ route('penilaian.create') }}" class="btn btn-success">
-                <i class="fas fa-plus me-2"></i>
+                <i class="fas fa-plus"></i>
                 Tambah Penilaian
+            </a>
+            <a href="{{ route('hasil.index') }}" class="btn btn-outline">
+                <i class="fas fa-trophy"></i>
+                Lihat Hasil
             </a>
         </div>
     </div>
+</div>
 
-@if($kandidats->count() > 0 && $kriterias->count() > 0)
+    <!-- Alert Messages -->
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="fas fa-check-circle me-2"></i>
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
@@ -31,213 +52,205 @@
         </div>
     @endif
 
-    <div class="card shadow">
-        <div class="card-header">
-            <h6 class="mb-0">
-                <i class="fas fa-table me-2"></i>
-                Matriks Penilaian (Kandidat × Kriteria)
-            </h6>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('penilaian.matriks') }}" method="POST" id="penilaianForm">
-                @csrf
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th width="200">Kandidat</th>
-                                @foreach($kriterias as $kriteria)
-                                <th class="text-center" title="{{ $kriteria->keterangan }}">
-                                    {{ $kriteria->simbol }}<br>
-                                    <small class="text-muted">{{ $kriteria->nama_kriteria }}</small>
-                                    <br>
-                                    <small class="badge bg-info">{{ number_format($kriteria->bobot * 100, 0) }}%</small>
-                                </th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($kandidats as $kandidat)
-                            <tr>
-                                <td>
-                                    <strong>{{ $kandidat->nama_kandidat }}</strong><br>
-                                    <small class="text-muted">{{ $kandidat->asal_daerah }}</small>
-                                </td>
-                                @foreach($kriterias as $kriteria)
-                                <td class="text-center">
-                                    @php
-                                        $penilaian = $kandidat->penilaians->where('kriteria_id', $kriteria->id)->first();
-                                        $nilai = $penilaian ? $penilaian->nilai : 0;
-                                    @endphp
-                                    
-                                    <select name="penilaian[{{ $kandidat->id }}][{{ $kriteria->id }}]" 
-                                            class="form-select form-select-sm @error('penilaian.' . $kandidat->id . '.' . $kriteria->id) is-invalid @enderror"
-                                            style="min-width: 60px;"
-                                            onchange="console.log('Changed: kandidat={{ $kandidat->id }}, kriteria={{ $kriteria->id }}, nilai=' + this.value)">
-                                        <option value="0" {{ $nilai == 0 ? 'selected' : '' }}>-</option>
-                                        <option value="1" {{ $nilai == 1 ? 'selected' : '' }}>1</option>
-                                        <option value="2" {{ $nilai == 2 ? 'selected' : '' }}>2</option>
-                                        <option value="3" {{ $nilai == 3 ? 'selected' : '' }}>3</option>
-                                        <option value="4" {{ $nilai == 4 ? 'selected' : '' }}>4</option>
-                                        <option value="5" {{ $nilai == 5 ? 'selected' : '' }}>5</option>
-                                    </select>
-                                    
-                                    @if($penilaian)
-                                        <small class="text-success d-block mt-1">
-                                            <i class="fas fa-check-circle"></i> Tersimpan
-                                        </small>
-                                    @endif
-                                </td>
-                                @endforeach
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="mt-4">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>Petunjuk Penilaian:</strong>
-                        <ul class="mb-0 mt-2">
-                            <li>Skala penilaian: 1 (Sangat Rendah) sampai 5 (Sangat Tinggi)</li>
-                            <li>Semua kriteria bersifat benefit (semakin tinggi nilainya semakin baik)</li>
-                            <li>Bobot kriteria sudah ditetapkan dan tidak dapat diubah</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>
-                            Kembali ke Dashboard
-                        </a>
-                        <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <i class="fas fa-save me-2"></i>
-                            Simpan Penilaian
-                        </button>
-                    </div>
-                </div>
-            </form>
+<!-- Stats Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="stat-value">{{ $kandidats->count() }}</div>
+                <div class="stat-label">Total Kandidat</div>
+            </div>
+            <div style="font-size: 2rem; color: var(--ipm-green);">
+                <i class="fas fa-users"></i>
+            </div>
         </div>
     </div>
 
-    <!-- Daftar Penilaian yang Sudah Ada -->
-    @php
-        $penilaians = \App\Models\Penilaian::with(['kandidat', 'kriteria'])->get();
-    @endphp
-    
-    @if($penilaians->count() > 0)
-    <div class="card shadow mt-4">
-        <div class="card-header bg-light">
-            <h6 class="mb-0">
-                <i class="fas fa-list me-2"></i>
-                Daftar Penilaian yang Sudah Ada
-            </h6>
+    <div class="stat-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="stat-value">{{ $kriterias->count() }}</div>
+                <div class="stat-label">Kriteria Penilaian</div>
+            </div>
+            <div style="font-size: 2rem; color: var(--ipm-green);">
+                <i class="fas fa-list-check"></i>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-light">
+    </div>
+
+    <div class="stat-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="stat-value">{{ \App\Models\Penilaian::count() }}</div>
+                <div class="stat-label">Penilaian Tersimpan</div>
+            </div>
+            <div style="font-size: 2rem; color: var(--ipm-yellow);">
+                <i class="fas fa-save"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="stat-value">{{ ($kandidats->count() * $kriterias->count()) - \App\Models\Penilaian::count() }}</div>
+                <div class="stat-label">Belum Dinilai</div>
+            </div>
+            <div style="font-size: 2rem; color: var(--ipm-red);">
+                <i class="fas fa-clock"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if($kandidats && $kandidats->count() > 0 && $kriterias && $kriterias->count() > 0)
+<!-- Matriks Penilaian -->
+<div class="card">
+    <div class="card-header">
+        <h3>
+            <i class="fas fa-table"></i>
+            Matriks Penilaian (Kandidat × Kriteria)
+        </h3>
+    </div>
+    <div class="card-body" style="padding: 0;">
+        <form action="{{ route('penilaian.store') }}" method="POST" id="penilaianForm">
+            @csrf
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Kandidat</th>
-                            <th>Kriteria</th>
-                            <th>Nilai</th>
-                            <th width="120">Aksi</th>
+                            <th style="width: 200px; text-align: center;">
+                                <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
+                                Kandidat
+                            </th>
+                            @foreach($kriterias as $kriteria)
+                            <th style="text-align: center; min-width: 120px;">
+                                <div style="font-weight: 700;">{{ $kriteria->simbol }}</div>
+                                <div style="font-size: 0.75rem;">{{ $kriteria->nama_kriteria }}</div>
+                                <div class="badge badge-warning">{{ $kriteria->bobot }}%</div>
+                            </th>
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($penilaians as $index => $penilaian)
+                        @foreach($kandidats as $kandidat)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $penilaian->kandidat->nama_kandidat }}</td>
-                            <td>{{ $penilaian->kriteria->simbol }} - {{ $penilaian->kriteria->nama_kriteria }}</td>
                             <td>
-                                <span class="badge bg-{{ $penilaian->nilai >= 4 ? 'success' : ($penilaian->nilai >= 3 ? 'warning' : 'danger') }}">
-                                    {{ $penilaian->nilai }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a href="{{ route('penilaian.show', $penilaian) }}" 
-                                       class="btn btn-sm btn-outline-info" 
-                                       title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('penilaian.edit', $penilaian) }}" 
-                                       class="btn btn-sm btn-outline-warning" 
-                                       title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('penilaian.destroy', $penilaian) }}" 
-                                          method="POST" 
-                                          class="d-inline"
-                                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus penilaian ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-sm btn-outline-danger" 
-                                                title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 0.75rem;">
+                                        @if($kandidat->foto)
+                                            <img src="{{ asset('storage/' . $kandidat->foto) }}" 
+                                                 alt="{{ $kandidat->nama_kandidat }}" 
+                                                 style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--ipm-gray-200); display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-user" style="color: var(--ipm-gray-500);"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--ipm-gray-900);">{{ $kandidat->nama_kandidat }}</div>
+                                        <small style="color: var(--ipm-gray-600);">{{ $kandidat->asal_daerah }}</small>
+                                    </div>
                                 </div>
                             </td>
+                            @foreach($kriterias as $kriteria)
+                            <td style="text-align: center;">
+                                @php
+                                    $penilaian = \App\Models\Penilaian::where('kandidat_id', $kandidat->id)
+                                                                    ->where('kriteria_id', $kriteria->id)
+                                                                    ->first();
+                                    $nilai = $penilaian ? $penilaian->nilai : 0;
+                                @endphp
+                                <select name="penilaian[{{ $kandidat->id }}][{{ $kriteria->id }}]" 
+                                        class="form-control" 
+                                        style="min-width: 80px; margin-bottom: 0.5rem;"
+                                        onchange="updateStatus(this, {{ $kandidat->id }}, {{ $kriteria->id }})">
+                                    <option value="0" {{ $nilai == 0 ? 'selected' : '' }}>-</option>
+                                    <option value="1" {{ $nilai == 1 ? 'selected' : '' }}>1</option>
+                                    <option value="2" {{ $nilai == 2 ? 'selected' : '' }}>2</option>
+                                    <option value="3" {{ $nilai == 3 ? 'selected' : '' }}>3</option>
+                                    <option value="4" {{ $nilai == 4 ? 'selected' : '' }}>4</option>
+                                    <option value="5" {{ $nilai == 5 ? 'selected' : '' }}>5</option>
+                                </select>
+                                <div>
+                                    @if($nilai > 0)
+                                        <span class="badge badge-success">
+                                            <i class="fas fa-check" style="margin-right: 0.25rem;"></i>
+                                            Tersimpan
+                                        </span>
+                                    @else
+                                        <span class="badge" style="background: var(--ipm-gray-400); color: var(--ipm-white);">
+                                            <i class="fas fa-clock" style="margin-right: 0.25rem;"></i>
+                                            Belum
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+                            @endforeach
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
+            
+            <div style="padding: 1.5rem; background: var(--ipm-gray-50); border-top: 1px solid var(--ipm-gray-200);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="color: var(--ipm-gray-600);">
+                        <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                        Pilih nilai 1-5 untuk setiap kriteria. Nilai 0 berarti belum dinilai.
+                    </div>
+                    <button type="submit" class="btn btn-success" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        Simpan Penilaian
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
-    @endif
+</div>
 @else
-    <div class="text-center py-5">
-        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-        <h5 class="text-warning">Data Belum Lengkap</h5>
-        <p class="text-muted">
+<!-- No Data Message -->
+<div class="card">
+    <div class="card-body" style="text-align: center; padding: 3rem;">
+        <div style="margin-bottom: 2rem;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: var(--ipm-yellow);"></i>
+        </div>
+        <h4 style="color: var(--ipm-gray-600); margin-bottom: 1rem;">Data Belum Lengkap</h4>
+        <p style="color: var(--ipm-gray-600); margin-bottom: 2rem;">
             @if($kandidats->count() == 0)
-                Belum ada kandidat. Silakan tambah kandidat terlebih dahulu.
+                Data kandidat belum tersedia. Hubungi administrator untuk mengatur data kandidat.
             @elseif($kriterias->count() == 0)
-                Data kriteria belum tersedia. Hubungi administrator.
+                Data kriteria belum tersedia. Hubungi administrator untuk mengatur kriteria penilaian.
             @endif
         </p>
         @if($kandidats->count() == 0)
             <a href="{{ route('kandidat.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>
+                <i class="fas fa-plus"></i>
                 Tambah Kandidat
             </a>
         @endif
-    </div> <!-- end card-body -->
-</div> <!-- end card -->
+    </div>
+</div>
 @endif
 
-@section('scripts')
 <script>
 document.getElementById('penilaianForm').addEventListener('submit', function(e) {
-    console.log('Form submitted');
-    
-    // Debug: Log all form data
-    const formData = new FormData(this);
-    console.log('Form data:');
-    for (let [key, value] of formData.entries()) {
-        console.log(key + ': ' + value);
-    }
-    
-    // Debug: Check if penilaian data exists
-    const penilaianData = {};
-    const selects = this.querySelectorAll('select[name^="penilaian"]');
-    selects.forEach(select => {
-        if (select.value > 0) {
-            penilaianData[select.name] = select.value;
-        }
-    });
-    console.log('Penilaian data:', penilaianData);
-    
     // Show loading state
     const submitBtn = document.getElementById('submitBtn');
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Menyimpan...';
     submitBtn.disabled = true;
 });
+
+function updateStatus(select, kandidatId, kriteriaId) {
+    const statusDiv = select.parentNode.querySelector('.badge');
+    if (select.value > 0) {
+        statusDiv.className = 'badge bg-success';
+        statusDiv.innerHTML = '<i class="fas fa-check me-1"></i>Tersimpan';
+    } else {
+        statusDiv.className = 'badge bg-secondary';
+        statusDiv.innerHTML = '<i class="fas fa-clock me-1"></i>Belum';
+    }
+}
 </script>
 @endsection

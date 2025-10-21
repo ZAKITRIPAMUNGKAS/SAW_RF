@@ -4,7 +4,8 @@
 @section('page-title', 'Hasil SAW')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Hasil Perhitungan SAW</h4>
     <div>
         @if($kelengkapanPenilaian['lengkap'])
@@ -222,4 +223,5 @@
         @endif
     </div>
 @endif
+</div> <!-- End container-fluid -->
 @endsection
